@@ -1,0 +1,52 @@
+/* Container */
+.container {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+    font-family: Arial, sans-serif;
+    background-color: rgb(151, 135, 135);
+}
+
+/* Header */
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    color: #333;
+}
+
+.header p {
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Skill Sections */
+.skillSections {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+/* Focus Section */
+.focus, .technologies {
+    flex: 1;
+    background: #f4f4f4;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* Lists */
+ol {
+    list-style: none;
+    padding: 0;
+}
+
+ol li {
+    background: #ddd;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+}

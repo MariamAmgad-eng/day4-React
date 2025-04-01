@@ -1,0 +1,19 @@
+.white{
+    background-color: white;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+}
+.left{
+    color: black;
+    float: left;
+}
+.right{
+    width:50%;
+    color:black;
+    float: right;
+}
