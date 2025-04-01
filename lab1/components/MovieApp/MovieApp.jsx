@@ -1,54 +1,48 @@
-
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMovies, toggleFavorite } from "../store/moviesSlice";
 import { Col, Row, Button, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { addToFavorites, removeFromFavorites } from "../../redux/favoritesSlice";
-import { FaHeart } from "react-icons/fa";
-
-const API_KEY = "c94b800b13b9b455a5d91c9b54e821a3";
-const API_URL = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
 
 function MovieApp() {
-  const [movies, setMovies] = useState([]);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const favorites = useSelector((state) => state.favorites.favoriteMovies);
+    const dispatch = useDispatch();
+    const { movies, favorites, loading } = useSelector((state) => state.movies);
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    axios.get(API_URL).then((response) => {
-      setMovies(response.data.results);
-    });
-  }, []);
+    useEffect(() => {
+        dispatch(fetchMovies());
+    }, [dispatch]);
 
-  const isFavorite = (movie) => favorites.some((fav) => fav.id === movie.id);
+    if (loading) return <h3>Loading movies...</h3>;
 
-  return (
-    <Row>
-      {movies.map((movie) => (
-        <Col key={movie.id} md={4}>
-          <Card>
-            <Card.Img variant="top" src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
-            <Card.Body>
-              <Card.Title>{movie.title}</Card.Title>
-              <Button onClick={() => navigate(`/details/${movie.id}`)}>View Details</Button>
-              <Button
-                variant="link"
-                onClick={() =>
-                  isFavorite(movie)
-                    ? dispatch(removeFromFavorites(movie.id))
-                    : dispatch(addToFavorites(movie))
-                }
-              >
-                <FaHeart color={isFavorite(movie) ? "red" : "black"} size={20} />
-              </Button>
-            </Card.Body>
-          </Card>
-        </Col>
-      ))}
-    </Row>
-  );
+    return (
+        <div className="container">
+            <h2 className="text-center my-4">Movie App</h2>
+            <Row>
+                {movies.map((movie) => (
+                    <Col key={movie.id} md={4} className="mb-4">
+                        <Card style={{ width: "100%" }}>
+                            <Card.Img variant="top" src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
+                            <Card.Body>
+                                <Card.Title>{movie.title}</Card.Title>
+                                <Card.Text>{movie.release_date}</Card.Text>
+                                <Button variant="primary" onClick={() => navigate(`/movie/${movie.id}`)}>
+                                    Go Details
+                                </Button>
+                                <Button
+                                    variant="outline-danger"
+                                    className="ms-2"
+                                    onClick={() => dispatch(toggleFavorite(movie))}
+                                >
+                                    {favorites.some((fav) => fav.id === movie.id) ? "❤️" : "🤍"}
+                                </Button>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                ))}
+            </Row>
+        </div>
+    );
 }
 
 export default MovieApp;

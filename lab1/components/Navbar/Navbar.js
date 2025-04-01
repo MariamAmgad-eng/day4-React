@@ -1,16 +1,23 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import MovieApp from "./components/MovieApp";
+import MovieDetails from "./components/MovieDetails";
+import Favorites from "./components/Favorites";
+import Navbar from "./components/Navbar";
+import ThemeProvider from "./ThemeContext";
 
-function Navbar() {
-  const favoritesCount = useSelector((state) => state.favorites.favoriteMovies.length);
-
-  return (
-    <nav>
-      <Link to="/">Home</Link>
-      <Link to="/favorites">Favorites ❤️ ({favoritesCount})</Link>
-    </nav>
-  );
+function App() {
+    return (
+        <ThemeProvider>
+            <Router>
+                <Navbar />
+                <Routes>
+                    <Route path="/" element={<MovieApp />} />
+                    <Route path="/movie/:id" element={<MovieDetails />} />
+                    <Route path="/favorites" element={<Favorites />} />
+                </Routes>
+            </Router>
+        </ThemeProvider>
+    );
 }
 
-export default Navbar;
+export default App;
